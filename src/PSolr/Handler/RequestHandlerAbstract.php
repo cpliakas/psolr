@@ -23,6 +23,61 @@ abstract class RequestHandlerAbstract
     protected $method = 'get';
 
     /**
+     * @var array
+     */
+    protected $defaultParams = array();
+
+    /**
+     * Sets the default parameters for this request handler.
+     *
+     * @param array $params
+     *
+     * @return \PSolr\SolrClient
+     */
+    public function setDefaultParams(array $params)
+    {
+        $this->defaultParams = $params;
+        return $this;
+    }
+
+    /**
+     * Returns the request handler's default parameters.
+     *
+     * @return array
+     */
+    public function getDefaultParams()
+    {
+        return $this->getConfig('default_params');
+    }
+
+    /**
+     * Sets the default parameters for this request handler.
+     *
+     * @param string $param
+     * @param mixed $value
+     *
+     * @return \PSolr\SolrClient
+     */
+    public function setDefaultParam($param, $value)
+    {
+        $this->defaultParams[$param] = $value;
+        return $this;
+    }
+
+    /**
+     * Sets the default parameters for this request handler.
+     *
+     * @param string $param
+     *
+     * @return \PSolr\SolrClient
+     */
+    public function removeDefaultParam($param)
+    {
+        unset($this->defaultParams[$param]);
+        return $this;
+    }
+
+    /**
      * Returns a camel-cased value split by non-alphanumeric strings.
      *
      * @return string
@@ -35,13 +90,21 @@ abstract class RequestHandlerAbstract
     }
 
     /**
+     * Merges default params.
+     *
+     * Order of precedence is below:
+     *   - Params passed at runtime
+     *   - Request handler's default parameters
+     *   - Client's default parameters
+     *
      * @param array $params
      *
      * @return array
      */
     public function mergeDefaultParams(array $params)
     {
-        return array_merge($this->solr->getConfig('default_params'), $params);
+        $clientDefault = $this->solr->getConfig('default_params');
+        return array_merge($clientDefault, $this->defaultParams, $params);
     }
 
     /**

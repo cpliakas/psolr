@@ -18,6 +18,11 @@ abstract class RequestHandlerAbstract
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $method = 'get';
+
+    /**
      * Returns a camel-cased value split by non-alphanumeric strings.
      *
      * @return string
@@ -69,6 +74,14 @@ abstract class RequestHandlerAbstract
     }
 
     /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    /**
      * Returns the path tp the request handler.
      *
      * @return string
@@ -82,7 +95,7 @@ abstract class RequestHandlerAbstract
      *
      * @return array
      */
-    public function sendRequest($params, $headers = null, array $options = array())
+    public function sendRequest($params = array(), $headers = null, array $options = array())
     {
         $params = $this->mergeDefaultParams((array) $params);
         $response = $this->buildRequest($params, $options, $options)->send();
@@ -98,7 +111,30 @@ abstract class RequestHandlerAbstract
      *
      * @return \Guzzle\Http\Message\RequestInterface
      */
-    abstract public function buildRequest(array $params, $headers = null, array $options = array());
+    public function buildRequest($params, $headers, $options)
+    {
+        $method = $this->getMethod();
+        $uri = $this->getPath();
+
+        // Check if the GET is too long and do a POST instead.
+        if ('get' == $method && $this->solr->usePostMethod($uri, $params)) {
+            $method = 'post';
+        }
+
+        switch ($method) {
+            case 'get':
+            case 'head':
+                $options['query'] = $params;
+                return $this->solr->$method($uri, $headers, $options);
+
+            case 'options':
+                return $this->solr->$method($uri, $options);
+
+            default:
+                $body = $params ? $params : null;
+                return $this->solr->$method($uri, $headers, $params, $options);
+        }
+    }
 
     /**
      * @param \Guzzle\Http\Message\Response $response

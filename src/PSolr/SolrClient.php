@@ -135,11 +135,11 @@ class SolrClient extends Client
      *
      * @return boolean
      */
-    public function useGetMethod($handlerPath, array $params)
+    public function usePostMethod($handlerPath, array $params)
     {
         $uri = '{+base_path}/' . ltrim($handlerPath, '/');
         $url = Url::factory($this->getBaseUrl())->combine($this->expandTemplate($uri, $params));
-        return strlen($url) <= $this->getConfig('max_query_length');
+        return strlen($url) > $this->getConfig('max_query_length');
     }
 
     /**

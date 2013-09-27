@@ -30,6 +30,16 @@ abstract class RequestHandlerAbstract
     }
 
     /**
+     * @param array $params
+     *
+     * @return array
+     */
+    public function mergeDefaultParams(array $params)
+    {
+        return array_merge($this->solr->getConfig('default_params'), $params);
+    }
+
+    /**
      * @param \PSolr\SolrClient
      */
     public function setSolrClient(SolrClient $solr)
@@ -70,11 +80,11 @@ abstract class RequestHandlerAbstract
      * @param array|\ArrayObject $headers
      * @param array $options
      *
-     * @return \SimpleXMLElement|array
+     * @return array
      */
     public function sendRequest($params, $headers = null, array $options = array())
     {
-        $params = $this->solr->mergeDefaultParams((array) $params);
+        $params = $this->mergeDefaultParams((array) $params);
         $response = $this->buildRequest($params, $options, $options)->send();
         return $this->parseResponse($response, $params);
     }
@@ -94,7 +104,7 @@ abstract class RequestHandlerAbstract
      * @param \Guzzle\Http\Message\Response $response
      * @param array $params
      *
-     * @return \SimpleXMLElement|array
+     * @return array
      */
     public function parseResponse(Response $response, array $params)
     {

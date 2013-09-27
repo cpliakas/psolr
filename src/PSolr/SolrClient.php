@@ -7,8 +7,8 @@ use Guzzle\Http\Url;
 use Guzzle\Service\Client;
 
 /**
- * @method array|\SimpleXMLElement select($params = array(), $headers = null, array $options = array())
- * @method array|\SimpleXMLElement ping($params = array(), $headers = null, array $options = array())
+ * @method array select($params = array(), $headers = null, array $options = array())
+ * @method array ping($params = array(), $headers = null, array $options = array())
  */
 class SolrClient extends Client
 {
@@ -103,16 +103,6 @@ class SolrClient extends Client
     {
         unset($this->handlers[$name]);
         return $this;
-    }
-
-    /**
-     * @param \ArrayObject $params
-     *
-     * @return array
-     */
-    public function mergeDefaultParams(array $params)
-    {
-        return array_merge($this->getConfig('default_params'), $params);
     }
 
     /**

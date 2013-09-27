@@ -57,13 +57,37 @@ class SolrClient extends Client
     }
 
     /**
+     * Helper function to set the default params.
+     *
+     * @param array $params
+     *
+     * @return \PSolr\SolrClient
+     */
+    public function setDefaultParams(array $params)
+    {
+        $this->getConfig()->set('default_params', $params);
+        return $this;
+    }
+
+    /**
+     * Helper function to set the default params.
+     *
+     * @return array
+     */
+    public function getDefaultParams()
+    {
+        return $this->getConfig('default_params');
+    }
+
+    /**
      * {@inheritdoc}
      *
      * Prepends the {+base_path} expressions to the URI.
      */
     public function createRequest($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array())
     {
-        return parent::createRequest($method, '{+base_path}/' . $uri, $headers, $body, $options);
+        $uri = '{+base_path}/' . ltrim($uri, '/');
+        return parent::createRequest($method, $uri, $headers, $body, $options);
     }
 
     /**
@@ -113,7 +137,7 @@ class SolrClient extends Client
      */
     public function useGetMethod($handlerPath, array $params)
     {
-        $uri = '{+base_path}/' . $handlerPath;
+        $uri = '{+base_path}/' . ltrim($handlerPath, '/');
         $url = Url::factory($this->getBaseUrl())->combine($this->expandTemplate($uri, $params));
         return strlen($url) <= $this->getConfig('max_query_length');
     }

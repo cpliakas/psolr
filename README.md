@@ -54,3 +54,7 @@ $solr->setDefaultParams(array(
 $solr->select('my keywords');
 
 ```
+
+## Integrations
+
+* The [Acquia PHP SDK](https://github.com/cpliakas/acquia-sdk-php)

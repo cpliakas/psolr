@@ -12,7 +12,7 @@ library as a dependency to your composer.json file.
 ```json
 {
     "require": {
-        "cpliakas/psolr": "dev-master"
+        "cpliakas/psolr": "*"
     }
 }
 ```

@@ -1,5 +1,7 @@
 # PSolr
 
+[![Latest Stable Version](https://poser.pugx.org/cpliakas/psolr/v/stable.png)](https://packagist.org/packages/cpliakas/psolr)
+
 A simple PHP client for [Apache Solr](http://lucene.apache.org/solr/) that is
 built on top of [Guzzle](http://guzzlephp.org/) and inspired by
 [RSolr](https://github.com/mwmitchell/rsolr).

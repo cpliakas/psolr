@@ -3,17 +3,18 @@
 namespace PSolr;
 
 use Guzzle\Common\Collection;
+use Guzzle\Http\Message\Response;
 use Guzzle\Http\Url;
 use Guzzle\Service\Client;
 
 /**
- * @method array select($params = array(), $headers = null, array $options = array())
- * @method array ping($params = array(), $headers = null, array $options = array())
+ * @method array select($solrRequest = array(), $headers = null, array $options = array())
+ * @method array ping($solrRequest = array(), $headers = null, array $options = array())
  */
 class SolrClient extends Client
 {
     /**
-     * @var \PSolr\Handler\RequestHandlerAbstract[]
+     * @var \PSolr\RequestHandler[]
      */
     protected $handlers = array();
 
@@ -49,8 +50,8 @@ class SolrClient extends Client
         $solr->setUriTemplate(new SolrUriTemplate());
 
         $solr
-            ->setRequestHandler(new Handler\SelectHandler())
-            ->setRequestHandler(new Handler\RequestHandler('admin/ping', 'head', 'ping'))
+            ->setRequestHandler(new RequestHandler('select', 'select', 'get'))
+            ->setRequestHandler(new RequestHandler('ping', 'admin/ping', 'head'))
         ;
 
         return $solr;
@@ -80,24 +81,22 @@ class SolrClient extends Client
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $handlerName
      *
-     * Prepends the {+base_path} expressions to the URI.
+     * @return boolean
      */
-    public function createRequest($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array())
+    public function hasRequestHandler($handlerName)
     {
-        $uri = '{+base_path}/' . ltrim($uri, '/');
-        return parent::createRequest($method, $uri, $headers, $body, $options);
+        return isset($this->handlers[$handlerName]);
     }
 
     /**
-     * @param \PSolr\Handler\RequestHandlerAbstract $handler
+     * @param \PSolr\RequestHandler $handler
      *
      * @return \PSolr\SolrClient
      */
-    public function setRequestHandler(Handler\RequestHandlerAbstract $handler)
+    public function setRequestHandler(RequestHandler $handler)
     {
-        $handler->setSolrClient($this);
         $handlerName = $handler->getName();
         $this->handlers[$handlerName] = $handler;
         return $this;
@@ -106,9 +105,9 @@ class SolrClient extends Client
     /**
      * @param string $handlerName
      *
-     * @return \PSolr\SolrClient
+     * @return \PSolr\RequestHandler
      *
-     * @throws
+     * @throws \OutOfBoundsException
      */
     public function getRequestHandler($handlerName)
     {
@@ -119,43 +118,112 @@ class SolrClient extends Client
     }
 
     /**
-     * @param string $name
+     * @param string $handlerName
      *
      * @return \PSolr\SolrClient
      */
-    public function removeRequestHandler($name)
+    public function removeRequestHandler($handlerName)
     {
-        unset($this->handlers[$name]);
+        unset($this->handlers[$handlerName]);
         return $this;
     }
 
     /**
-     * @param string $handlerPath
-     * @param array $params
+     * @param string $handlerName
+     * @param \PSolr\SolrRequest|array|string $solrRequest
+     * @param array|null $headers
+     * @param array $options
+     *
+     * @return array|\SimpleXMLElement
+     */
+    public function sendRequest($handlerName, $solrRequest = array(), $headers = null, array $options = array())
+    {
+        $handler = $this->getRequestHandler($handlerName);
+
+        $solrRequest = $this->normalizeSolrRequest($solrRequest);
+        $solrRequest->mergeDefaultParams($this, $handler);
+
+        $method = $handler->getMethod();
+        $body = $solrRequest->getBody();
+
+        // For GETs and HEADs, the params are the query string. For POSTs
+        // without a body, the params are post data. For POSTs with a body, the
+        // params are the qstring.
+        if ('GET' == $method || 'HEAD' == $method) {
+            $options['query'] = (array) $solrRequest;
+        } elseif ('POST' == $method) {
+            if (null === $body) {
+                $body = (array) $solrRequest;
+            } else {
+                $options['query'] = (array) $solrRequest;
+            }
+        }
+
+        $uri = $handler->getPath();
+        $response = $this->createRequest($method, $uri, $headers, $body, $options)->send();
+        return $this->parseResponse($response, $solrRequest);
+    }
+
+    /**
+     * @param \PSolr\SolrRequest|array|string
+     *
+     * @return \PSolr\SolrRequest
+     */
+    public function normalizeSolrRequest($solrRequest)
+    {
+        if (is_string($solrRequest)) {
+            $solrRequest = array('q' => $solrRequest);
+        }
+        if (!$solrRequest instanceof SolrRequest) {
+            $solrRequest = new SolrRequest($solrRequest);
+        }
+        return $solrRequest;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Prepends the {+base_path} expressions to the URI, converts the GET to a
+     * POST if the query string is too long.
+     */
+    public function createRequest($method = 'GET', $uri = null, $headers = null, $body = null, array $options = array())
+    {
+        $uri = '{+base_path}/' . ltrim($uri, '/');
+        if ('GET' == $method && $this->usePostMethod($uri, $options)) {
+            $method = 'POST';
+        }
+        return parent::createRequest($method, $uri, $headers, $body, $options);
+    }
+
+    /**
+     * @param string $uri
+     * @param array $options
      *
      * @return boolean
      */
-    public function usePostMethod($handlerPath, array $params)
+    public function usePostMethod($uri, array $options)
     {
-        $uri = '{+base_path}/' . ltrim($handlerPath, '/');
-        $url = Url::factory($this->getBaseUrl())->combine($this->expandTemplate($uri, $params));
-        return strlen($url) > $this->getConfig('max_query_length');
+        if (isset($options['query'])) {
+            $url = Url::factory($this->getBaseUrl())->combine($this->expandTemplate($uri, $options['query']));
+            return strlen($url) > $this->getConfig('max_query_length');
+        }
+        return false;
     }
 
     /**
-     * @param string $handlerName
-     * @param array $params
-     * @param array|null $headers
-     * @param array $options
+     * @param \Guzzle\Http\Message\Response $response
+     * @param \PSolr\SolrRequest $solrRequest
+     *
+     * @return array|\SimpleXMLElement
      */
-    public function sendRequest($handlerName, $params = array(), $headers = null, array $options = array())
+    public function parseResponse(Response $response, SolrRequest $solrRequest)
     {
-        $handler = $this->getRequestHandler($handlerName);
-        return $handler->sendRequest($params, $headers, $options);
+        $method = (isset($solrRequest['wt']) && 'json' == $solrRequest['wt']) ? 'json' : 'xml';
+        return $response->$method();
     }
 
     /**
-     * Alloes request handlers to be called as methods.
+     * Allows request handlers to be called as methods.
      */
     public function __call($name, $arguments)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PSolr;
+namespace PSolr\Client;
 
 use Guzzle\Common\Collection;
 use Guzzle\Http\Message\Response;
@@ -8,25 +8,25 @@ use Guzzle\Http\Url;
 use Guzzle\Service\Client;
 
 /**
- * @method array luke($solrRequest = array(), $headers = null, array $options = array())
- * @method array mbeans($solrRequest = array(), $headers = null, array $options = array())
- * @method array ping($solrRequest = array(), $headers = null, array $options = array())
- * @method array select($solrRequest = array(), $headers = null, array $options = array())
- * @method array stats($solrRequest = array(), $headers = null, array $options = array())
- * @method array system($solrRequest = array(), $headers = null, array $options = array())
- * @method array update($solrRequest = array(), $headers = null, array $options = array())
+ * @method array luke($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array mbeans($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array ping($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array select($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array stats($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array system($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array update($params = array(), $body = null, $headers = null, array $options = array())
  */
 class SolrClient extends Client
 {
     /**
-     * @var \PSolr\RequestHandler[]
+     * @var \PSolr\Client\RequestHandler[]
      */
     protected $handlers = array();
 
     /**
      * {@inheritdoc}
      *
-     * @return \PSolr\SolrClient
+     * @return \PSolr\Client\SolrClient
      */
     public static function factory($config = array())
     {
@@ -85,9 +85,9 @@ class SolrClient extends Client
     }
 
     /**
-     * @param \PSolr\RequestHandler $handler
+     * @param \PSolr\Client\RequestHandler $handler
      *
-     * @return \PSolr\SolrClient
+     * @return \PSolr\Client\SolrClient
      */
     public function setRequestHandler(RequestHandler $handler)
     {
@@ -99,7 +99,7 @@ class SolrClient extends Client
     /**
      * @param string $handlerName
      *
-     * @return \PSolr\RequestHandler
+     * @return \PSolr\Client\RequestHandler
      *
      * @throws \OutOfBoundsException
      */
@@ -114,7 +114,7 @@ class SolrClient extends Client
     /**
      * @param string $handlerName
      *
-     * @return \PSolr\SolrClient
+     * @return \PSolr\Client\SolrClient
      */
     public function removeRequestHandler($handlerName)
     {
@@ -124,54 +124,52 @@ class SolrClient extends Client
 
     /**
      * @param string $handlerName
-     * @param \PSolr\SolrRequest|array|string $solrRequest
+     * @param mixed $params
+     * @param string|null $body
      * @param array|null $headers
      * @param array $options
      *
      * @return array|\SimpleXMLElement
      */
-    public function sendRequest($handlerName, $solrRequest = array(), $headers = null, array $options = array())
+    public function sendRequest($handlerName, $params = array(), $body = null, $headers = null, array $options = array())
     {
         $handler = $this->getRequestHandler($handlerName);
-
-        $solrRequest = $this->normalizeSolrRequest($solrRequest);
-        $solrRequest->mergeDefaultParams($handler);
-
-        $method = $handler->getMethod();
-        $body = $solrRequest->getBody();
+        $params = $this->normalizeParams($handler, $params);
 
         // For GETs and HEADs, the params are the query string. For POSTs
         // without a body, the params are post data. For POSTs with a body, the
         // params are the qstring.
+        $method = $handler->getMethod();
         if ('GET' == $method || 'HEAD' == $method) {
-            $options['query'] = (array) $solrRequest;
+            $options['query'] = $params;
         } elseif ('POST' == $method) {
             if (null === $body) {
-                $body = (array) $solrRequest;
+                $body = $params;
             } else {
-                $options['query'] = (array) $solrRequest;
+                $options['query'] = $params;
             }
         }
 
-        $uri = $handler->getPath();
-        $response = $this->createRequest($method, $uri, $headers, $body, $options)->send();
-        return $this->parseResponse($response, $solrRequest);
+        $response = $this->createRequest($method, $handler->getPath(), $headers, $body, $options)->send();
+        return $this->parseResponse($response, $params);
     }
 
     /**
-     * @param \PSolr\SolrRequest|array|string
+     * Normalizes and merges default params.
      *
-     * @return \PSolr\SolrRequest
+     * @param \PSolr\Client\RequestHandler $handler
+     * @param mixed $params
+     *
+     * @return array
      */
-    public function normalizeSolrRequest($solrRequest)
+    public function normalizeParams(RequestHandler $handler, $params)
     {
-        if (is_string($solrRequest)) {
-            $solrRequest = array('q' => $solrRequest);
+        if (is_string($params)) {
+            $params = array('q' => $params);
+        } elseif (!array($params)) {
+            $params = (array) $params;
         }
-        if (!$solrRequest instanceof SolrRequest) {
-            $solrRequest = new SolrRequest($solrRequest);
-        }
-        return $solrRequest;
+        return array_merge($handler->getDefaultParams(), $params);
     }
 
     /**
@@ -206,13 +204,13 @@ class SolrClient extends Client
 
     /**
      * @param \Guzzle\Http\Message\Response $response
-     * @param \PSolr\SolrRequest $solrRequest
+     * @param array $params
      *
      * @return array|\SimpleXMLElement
      */
-    public function parseResponse(Response $response, SolrRequest $solrRequest)
+    public function parseResponse(Response $response, array $params)
     {
-        $method = (isset($solrRequest['wt']) && 'json' == $solrRequest['wt']) ? 'json' : 'xml';
+        $method = (isset($params['wt']) && 'json' == $params['wt']) ? 'json' : 'xml';
         return $response->$method();
     }
 

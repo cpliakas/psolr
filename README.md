@@ -33,7 +33,7 @@ for installation and usage instructions.
 
 ```php
 
-use PSolr\SolrClient;
+use PSolr\Client\SolrClient;
 
 // Connect to a Solr server.
 $solr = SolrClient::factory(array(

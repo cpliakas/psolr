@@ -1,7 +1,7 @@
 {
-    "name": "cpliakas/psolr",
+    "name": "cpliakas/psolr-client",
     "type": "library",
-    "description": "A PHP client for Apache Solr.",
+    "description": "The Solr client component for the PSolr library.",
     "keywords": ["solr"],
     "homepage": "https://github.com/cpliakas/psolr",
     "license": "GPL-3.0",
@@ -25,7 +25,8 @@
     },
     "autoload": {
         "psr-0": {
-            "PSolr": "src/"
+            "PSolr\\Client": ""
         }
-    }
+    },
+    "target-dir": "PSolr/Client"
 }

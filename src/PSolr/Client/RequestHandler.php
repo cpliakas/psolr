@@ -1,6 +1,6 @@
 <?php
 
-namespace PSolr;
+namespace PSolr\Client;
 
 class RequestHandler
 {
@@ -71,7 +71,7 @@ class RequestHandler
      *
      * @param array $params
      *
-     * @return \PSolr\RequestHandler
+     * @return \PSolr\Client\RequestHandler
      */
     public function setDefaultParams(array $params)
     {
@@ -85,7 +85,7 @@ class RequestHandler
      * @param string $param
      * @param mixed $value
      *
-     * @return \PSolr\RequestHandler
+     * @return \PSolr\Client\RequestHandler
      */
     public function setDefaultParam($param, $value)
     {
@@ -108,7 +108,7 @@ class RequestHandler
      *
      * @param string $param
      *
-     * @return \PSolr\RequestHandler
+     * @return \PSolr\Client\RequestHandler
      */
     public function removeDefaultParam($param)
     {

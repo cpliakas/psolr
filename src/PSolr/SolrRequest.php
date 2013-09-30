@@ -54,4 +54,12 @@ class SolrRequest extends \ArrayObject
         $mergedParams = array_merge($handler->getDefaultParams(), (array) $this);
         $this->exchangeArray($mergedParams);
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->body ?: '';
+    }
 }

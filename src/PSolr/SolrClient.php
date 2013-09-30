@@ -8,8 +8,13 @@ use Guzzle\Http\Url;
 use Guzzle\Service\Client;
 
 /**
- * @method array select($solrRequest = array(), $headers = null, array $options = array())
+ * @method array luke($solrRequest = array(), $headers = null, array $options = array())
+ * @method array mbeans($solrRequest = array(), $headers = null, array $options = array())
  * @method array ping($solrRequest = array(), $headers = null, array $options = array())
+ * @method array select($solrRequest = array(), $headers = null, array $options = array())
+ * @method array stats($solrRequest = array(), $headers = null, array $options = array())
+ * @method array system($solrRequest = array(), $headers = null, array $options = array())
+ * @method array update($solrRequest = array(), $headers = null, array $options = array())
  */
 class SolrClient extends Client
 {
@@ -29,17 +34,12 @@ class SolrClient extends Client
             'base_url' => 'http://localhost:8983',
             'base_path' => '/solr',
             'max_query_length' => 3500,
-            'default_params' => array(
-                'wt' => 'json',
-                'json.nl' => 'map',
-            ),
         );
 
         $required = array(
             'base_url',
             'base_path',
             'max_query_length',
-            'default_params',
         );
 
         // Instantiate and return the Solr client.
@@ -49,35 +49,26 @@ class SolrClient extends Client
         // Use URI template expansion in a way that doesn't break Solr.
         $solr->setUriTemplate(new SolrUriTemplate());
 
+        $jsonParams = array(
+            'wt' => 'json',
+            'json.nl' => 'map',
+        );
+
+        $xmlParams = array(
+            'wt' => 'xml',
+        );
+
         $solr
-            ->setRequestHandler(new RequestHandler('select', 'select', 'get'))
-            ->setRequestHandler(new RequestHandler('ping', 'admin/ping', 'head'))
+            ->setRequestHandler(new RequestHandler('luke',   'admin/luke',      'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('mbeans', 'admin/mbeans',    'GET',  $xmlParams + array('stats' => 'true')))
+            ->setRequestHandler(new RequestHandler('ping',   'admin/ping',      'HEAD', $jsonParams))
+            ->setRequestHandler(new RequestHandler('select', 'select',          'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('stats',  'admin/stats.jsp', 'GET',  $xmlParams))
+            ->setRequestHandler(new RequestHandler('system', 'admin/system',    'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('update', 'update',          'POST'))
         ;
 
         return $solr;
-    }
-
-    /**
-     * Helper function to set the default params.
-     *
-     * @param array $params
-     *
-     * @return \PSolr\SolrClient
-     */
-    public function setDefaultParams(array $params)
-    {
-        $this->getConfig()->set('default_params', $params);
-        return $this;
-    }
-
-    /**
-     * Helper function to set the default params.
-     *
-     * @return array
-     */
-    public function getDefaultParams()
-    {
-        return $this->getConfig('default_params');
     }
 
     /**
@@ -141,7 +132,7 @@ class SolrClient extends Client
         $handler = $this->getRequestHandler($handlerName);
 
         $solrRequest = $this->normalizeSolrRequest($solrRequest);
-        $solrRequest->mergeDefaultParams($this, $handler);
+        $solrRequest->mergeDefaultParams($handler);
 
         $method = $handler->getMethod();
         $body = $solrRequest->getBody();

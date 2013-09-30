@@ -47,14 +47,6 @@ $response = $solr->select(array('q' => '*:*'));
 // Send arbitrary requests to Solr.
 // @see http://guzzlephp.org/http-client/client.html#creating-requests-with-a-client
 $response = $solr->get('admin/ping?wt=json')->send()->json();
-
-// Set default parameters and execute a simple keyword search.
-$solr->setDefaultParams(array(
-    'wt' => 'xml',
-    'rows' => 15,
-));
-$solr->select('my keywords');
-
 ```
 
 ## Integrations

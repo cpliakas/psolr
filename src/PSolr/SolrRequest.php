@@ -47,15 +47,11 @@ class SolrRequest extends \ArrayObject
     }
 
     /**
-     * @param \PSolr\SolrClient $solr
      * @param \PSolr\RequestHandler $handler
      */
-    public function mergeDefaultParams(SolrClient $solr, RequestHandler $handler)
+    public function mergeDefaultParams(RequestHandler $handler)
     {
-        $this->exchangeArray(array_merge(
-            $solr->getConfig('default_params'),
-            $handler->getDefaultParams(),
-            (array) $this
-        ));
+        $mergedParams = array_merge($handler->getDefaultParams(), (array) $this);
+        $this->exchangeArray($mergedParams);
     }
 }

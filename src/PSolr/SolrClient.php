@@ -49,11 +49,14 @@ class SolrClient extends Client
         // Use URI template expansion in a way that doesn't break Solr.
         $solr->setUriTemplate(new SolrUriTemplate());
 
+        // Use JSON whenever possible.
+        // @see http://code.google.com/p/solr-php-client/issues/detail?id=6#c1
         $jsonParams = array(
             'wt' => 'json',
             'json.nl' => 'map',
         );
 
+        // Sometimes we have to use XML :-(.
         $xmlParams = array(
             'wt' => 'xml',
         );

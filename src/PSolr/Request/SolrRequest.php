@@ -2,7 +2,7 @@
 
 namespace PSolr\Request;
 
-use PSolr\Request\SolrClient;
+use PSolr\Client\SolrClient;
 
 class SolrRequest extends \ArrayObject
 {
@@ -15,6 +15,11 @@ class SolrRequest extends \ArrayObject
      * @var string|null
      */
     protected $body;
+
+    /**
+     * @var protected
+     */
+    protected $handlerName = 'select';
 
     /**
      * @param \PSolr\Client\SolrClient $solr
@@ -75,6 +80,25 @@ class SolrRequest extends \ArrayObject
     }
 
     /**
+     * @param string $handlerName
+     *
+     * @return \PSolr\Request\SolrRequest
+     */
+    public function setHandlerName($handlerName)
+    {
+        $this->handlerName = $handlerName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHandlerName()
+    {
+        return $this->handlerName;
+    }
+
+    /**
      * Escape a value for use in XML.
      *
      * @param string $value
@@ -101,6 +125,16 @@ class SolrRequest extends \ArrayObject
         // @see http://w3.org/International/questions/qa-forms-utf-8.html
         // Printable utf-8 does not include any of these chars below x7F
         return preg_replace('@[\x00-\x08\x0B\x0C\x0E-\x1F]@', ' ', $rawXml);
+    }
+
+    /**
+     * @param array|null $headers
+     * @param array $options
+     */
+    public function sendRequest($headers = null, array $options = array())
+    {
+        $body = (string) $this ?: null;
+        return $this->solr->sendRequest($this->handlerName, (array) $this, $body, $headers, $options);
     }
 
     /**

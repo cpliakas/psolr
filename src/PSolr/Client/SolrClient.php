@@ -18,6 +18,8 @@ use Guzzle\Service\Client;
  */
 class SolrClient extends Client
 {
+    const MAX_QUERY_LENGTH = 3600;
+
     /**
      * @var \PSolr\Client\RequestHandler[]
      */
@@ -33,7 +35,7 @@ class SolrClient extends Client
         $defaults = array(
             'base_url' => 'http://localhost:8983',
             'base_path' => '/solr',
-            'max_query_length' => 3500,
+            'max_query_length' => self::MAX_QUERY_LENGTH,
         );
 
         $required = array(
@@ -183,6 +185,8 @@ class SolrClient extends Client
         $uri = '{+base_path}/' . ltrim($uri, '/');
         if ('GET' == $method && $this->usePostMethod($uri, $options)) {
             $method = 'POST';
+            $body = $options['query'];
+            unset($options['query']);
         }
         return parent::createRequest($method, $uri, $headers, $body, $options);
     }

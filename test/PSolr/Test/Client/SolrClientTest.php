@@ -60,7 +60,19 @@ class SolrClientTest extends \PHPUnit_Framework_TestCase
 
         $params = $solr->normalizeParams($handler, new \ArrayObject(array('q' => 'test')));
         $this->assertEquals($params, $expected);
+    }
 
+    public function testRemoveHandler()
+    {
+        $solr = SolrClient::factory();
+        $solr->removeRequestHandler('select');
+        $this->assertFalse($solr->hasRequestHandler('select'));
+    }
 
+    public function testPing()
+    {
+        $solr = SolrClient::factory();
+        $response = $solr->ping();
+        $this->assertEquals(array(), $response);
     }
 }

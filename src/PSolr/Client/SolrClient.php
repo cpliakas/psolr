@@ -168,7 +168,7 @@ class SolrClient extends Client
     {
         if (is_string($params)) {
             $params = array('q' => $params);
-        } elseif (!array($params)) {
+        } elseif (!is_array($params)) {
             $params = (array) $params;
         }
         return array_merge($handler->getDefaultParams(), $params);

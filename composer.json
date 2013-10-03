@@ -23,6 +23,12 @@
         "php": ">=5.3.0",
         "guzzle/service": "~3.0"
     },
+    "require-dev": {
+        "pdepend/pdepend": "~1.0",
+        "phploc/phploc": "~2.0",
+        "phpunit/phpunit": "~3.0",
+        "satooshi/php-coveralls": "dev-master"
+    },
     "autoload": {
         "psr-0": {
             "PSolr": "src/"

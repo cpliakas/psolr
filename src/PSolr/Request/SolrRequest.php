@@ -133,7 +133,10 @@ class SolrRequest extends \ArrayObject
      */
     public function sendRequest($headers = null, array $options = array())
     {
+        // This allows requests that build XML to pass the rendered document
+        // through the \PSolr\Request\SolrRequest::stripCtrlChars().
         $body = (string) $this ?: null;
+
         return $this->solr->sendRequest($this->handlerName, (array) $this, $body, $headers, $options);
     }
 

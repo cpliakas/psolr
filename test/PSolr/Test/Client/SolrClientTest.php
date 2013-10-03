@@ -62,13 +62,6 @@ class SolrClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($params, $expected);
     }
 
-    public function testRemoveHandler()
-    {
-        $solr = SolrClient::factory();
-        $solr->removeRequestHandler('select');
-        $this->assertFalse($solr->hasRequestHandler('select'));
-    }
-
     public function testPing()
     {
         $solr = SolrClient::factory();

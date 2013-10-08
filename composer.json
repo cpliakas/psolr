@@ -4,7 +4,7 @@
     "description": "A PHP client for Apache Solr.",
     "keywords": ["solr"],
     "homepage": "https://github.com/cpliakas/psolr",
-    "license": "GPL-3.0",
+    "license": "MIT",
     "authors": [
         {
             "name": "Chris Pliakas",

@@ -52,5 +52,5 @@ $response = $solr->get('admin/ping?wt=json')->send()->json();
 
 ## Integrations
 
-* The [Acquia PHP SDK](https://github.com/acquia/acquia-sdk-php)
+* The [Acquia SDK for PHP](https://github.com/acquia/acquia-sdk-php)
 

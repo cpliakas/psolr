@@ -7,8 +7,11 @@ namespace PSolr\Request;
  */
 class Select extends SolrRequest
 {
+    const OPERATOR_AND = 'AND';
+    const OPERATOR_OR  = 'OR';
+
     /**
-     * @param string $q
+     * @param string $query
      *
      * @return \PSolr\Request\Select
      *
@@ -151,6 +154,32 @@ class Select extends SolrRequest
     public function omitHeader($omitHeader)
     {
         $this['omitHeader'] = $omitHeader ? 'true' : 'false';
+        return $this;
+    }
+
+    /**
+     * @param string $operator
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/SearchHandler#q.op
+     */
+    public function setDefaultOperator($operator)
+    {
+        $this['q.op'] = $operator;
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/SearchHandler#df
+     */
+    public function setDefaultField($field)
+    {
+        $this['df'] = $field;
         return $this;
     }
 }

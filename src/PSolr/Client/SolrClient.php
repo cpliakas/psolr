@@ -13,6 +13,7 @@ use Guzzle\Service\Client;
  * @method array ping($params = array(), $body = null, $headers = null, array $options = array())
  * @method array select($params = array(), $body = null, $headers = null, array $options = array())
  * @method array stats($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array suggest($params = array(), $body = null, $headers = null, array $options = array())
  * @method array system($params = array(), $body = null, $headers = null, array $options = array())
  * @method array update($params = array(), $body = null, $headers = null, array $options = array())
  */
@@ -64,13 +65,14 @@ class SolrClient extends Client
         );
 
         $solr
-            ->setRequestHandler(new RequestHandler('luke',   'admin/luke',      'GET',  $jsonParams))
-            ->setRequestHandler(new RequestHandler('mbeans', 'admin/mbeans',    'GET',  $xmlParams + array('stats' => 'true')))
-            ->setRequestHandler(new RequestHandler('ping',   'admin/ping',      'HEAD', $jsonParams))
-            ->setRequestHandler(new RequestHandler('select', 'select',          'GET',  $jsonParams))
-            ->setRequestHandler(new RequestHandler('stats',  'admin/stats.jsp', 'GET',  $xmlParams))
-            ->setRequestHandler(new RequestHandler('system', 'admin/system',    'GET',  $jsonParams))
-            ->setRequestHandler(new RequestHandler('update', 'update',          'POST'))
+            ->setRequestHandler(new RequestHandler('luke',    'admin/luke',      'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('mbeans',  'admin/mbeans',    'GET',  $xmlParams + array('stats' => 'true')))
+            ->setRequestHandler(new RequestHandler('ping',    'admin/ping',      'HEAD', $jsonParams))
+            ->setRequestHandler(new RequestHandler('select',  'select',          'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('stats',   'admin/stats.jsp', 'GET',  $xmlParams))
+            ->setRequestHandler(new RequestHandler('suggest', 'suggest',         'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('system',  'admin/system',    'GET',  $jsonParams))
+            ->setRequestHandler(new RequestHandler('update',  'update',          'POST'))
         ;
 
         return $solr;
@@ -152,7 +154,8 @@ class SolrClient extends Client
             }
         }
 
-        $response = $this->createRequest($method, $handler->getPath(), $headers, $body, $options)->send();
+        $request = $this->createRequest($method, $handler->getPath(), $headers, $body, $options);
+        $response = $request->send();
         return $this->parseResponse($response, $params);
     }
 

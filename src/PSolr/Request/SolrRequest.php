@@ -3,14 +3,10 @@
 namespace PSolr\Request;
 
 use PSolr\Client\SolrClient;
+use Psolr\Component\Component;
 
 class SolrRequest extends \ArrayObject
 {
-    /**
-     * @var \PSolr\Request\SolrClient
-     */
-    protected $solr;
-
     /**
      * @var string|null
      */
@@ -22,34 +18,29 @@ class SolrRequest extends \ArrayObject
     protected $handlerName = 'select';
 
     /**
-     * @param \PSolr\Client\SolrClient $solr
+     * $var string
+     */
+    protected $responseClass = '\PSolr\Response\Response';
+
+    /**
      * @param array $params
      * @param string|null $body
      */
-    public function __construct(SolrClient $solr, array $params = array(), $body = null)
+    public function __construct(array $params = array(), $body = null)
     {
         parent::__construct($params);
-        $this->solr = $solr;
         $this->body = $body;
     }
 
     /**
-     * @param \PSolr\Request\SolrClient $solr
+     * @param array $params
+     * @param string|null $body
      *
      * @return \PSolr\Request\SolrRequest
      */
-    public function setSolrClient(SolrClient $solr)
+    static public function factory(array $params = array(), $body = null)
     {
-        $this->solr = $solr;
-        return $this;
-    }
-
-    /**
-     * @return \PSolr\Request\SolrClient
-     */
-    public function getSolrClient()
-    {
-        return $this->solr;
+        return new static($params, $body);
     }
 
     /**
@@ -128,16 +119,34 @@ class SolrRequest extends \ArrayObject
     }
 
     /**
+     * @param \Psolr\Component\Component $component
+     *
+     * @return \PSolr\Request\SolrRequest
+     */
+    public function addComponent(Component $component)
+    {
+        $this->exchangeArray(array_merge((array) $this, (array) $component));
+        return $this;
+    }
+
+    /**
+     * @param \PSolr\Request\SolrClient $solr
      * @param array|null $headers
      * @param array $options
+     *
+     * @return \PSolr\Response\Response|\SimpleXMLElement
      */
-    public function sendRequest($headers = null, array $options = array())
+    public function sendRequest(SolrClient $solr, $headers = null, array $options = array())
     {
         // This allows requests that build XML to pass the rendered document
         // through the \PSolr\Request\SolrRequest::stripCtrlChars().
         $body = (string) $this ?: null;
+        $params = (array) $this;
 
-        return $this->solr->sendRequest($this->handlerName, (array) $this, $body, $headers, $options);
+        // @todo Add a method in \PSolr\Response\Response to normalize the XML
+        // in to an array. Just use JSON and all is right in the world.
+        $data = $solr->sendRequest($this->handlerName, $params, $body, $headers, $options);
+        return is_array($data) ? new $this->responseClass($data, $params) : $data;
     }
 
     /**

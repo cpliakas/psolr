@@ -4,11 +4,18 @@ namespace PSolr\Request;
 
 /**
  * @see http://wiki.apache.org/solr/CommonQueryParameters
+ *
+ * @method \PSolr\Response\Select sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
  */
 class Select extends SolrRequest
 {
     const OPERATOR_AND = 'AND';
     const OPERATOR_OR  = 'OR';
+
+    /**
+     * $var string
+     */
+    protected $responseClass = '\PSolr\Response\Select';
 
     /**
      * @param string $query

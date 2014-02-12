@@ -11,8 +11,19 @@ class Spellcheck extends Response
      */
     public function getIterator()
     {
-        $suggestions = $this['spellcheck']['suggestions'][$this->params['q']]['suggestion'];
-        return new \ArrayIterator($suggestions);
+        return new \ArrayIterator($this->suggestions());
+    }
+
+    /**
+     * @return array
+     */
+    public function suggestions()
+    {
+        if (isset($this['spellcheck']['suggestions'][$this->params['q']]['suggestion'])) {
+            return $this['spellcheck']['suggestions'][$this->params['q']]['suggestion'];
+        } else {
+            return array();
+        }
     }
 
     /**
@@ -20,7 +31,11 @@ class Spellcheck extends Response
      */
     public function numFound()
     {
-        return $this['spellcheck']['suggestions'][$this->params['q']]['numFound'];
+        if (isset($this['spellcheck']['suggestions'][$this->params['q']]['numFound'])) {
+            return $this['spellcheck']['suggestions'][$this->params['q']]['numFound'];
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -28,7 +43,11 @@ class Spellcheck extends Response
      */
     public function startOffset()
     {
-        return $this['spellcheck']['suggestions'][$this->params['q']]['startOffset'];
+        if (isset($this['spellcheck']['suggestions'][$this->params['q']]['startOffset'])) {
+            return $this['spellcheck']['suggestions'][$this->params['q']]['startOffset'];
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -36,15 +55,23 @@ class Spellcheck extends Response
      */
     public function endOffset()
     {
-        return $this['spellcheck']['suggestions'][$this->params['q']]['endOffset'];
+        if (isset($this['spellcheck']['suggestions'][$this->params['q']]['endOffset'])) {
+            return $this['spellcheck']['suggestions'][$this->params['q']]['endOffset'];
+        } else {
+            return 0;
+        }
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function collation()
     {
-        return $this['spellcheck']['suggestions']['collation'];
+        if (isset($this['spellcheck']['suggestions']['collation'])) {
+            return $this['spellcheck']['suggestions']['collation'];
+        } else {
+            return '';
+        }
     }
 
     /**

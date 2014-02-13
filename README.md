@@ -48,8 +48,9 @@ $solr = SolrClient::factory(array(
 
 ### Querying
 
+#### Searching Documents
+
 ```php
-// Send a request to the /select handler.
 $response = $solr->select(array('q' => '*:*'));
 ```
 
@@ -67,14 +68,7 @@ $response = $select->sendRequest($solr);
 $response->numFound();
 ```
 
-#### Sending Arbitrary Requests
-
-```php
-// @see http://guzzlephp.org/http-client/client.html#creating-requests-with-a-client
-$response = $solr->get('admin/ping?wt=json')->send()->json();
-```
-
-### Updating Documents
+### Adding Documents
 
 ```php
 $add = Request\Add::factory();
@@ -99,6 +93,18 @@ $response = Request\Delete::factory()
     ->sendRequest($solr)
 ;
 ```
+
+### Sending Arbitrary Solr Requests
+
+```php
+$response = $solr->get('admin/ping?wt=json')->send()->json();
+```
+
+Refer to [Guzzle's documentation](http://guzzlephp.org/http-client/client.html#creating-requests-with-a-client)
+for more details on making web requests.
+
+Refer to [Apache Solr's documentation](http://lucene.apache.org/solr/documentation.html)
+for more details on the API.
 
 ## Integrations
 

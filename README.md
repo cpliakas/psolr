@@ -89,6 +89,17 @@ $add->addDocument($document);
 $response = $add->sendRequest($solr)
 ```
 
+### Deleting Documents
+
+```php
+$response = Request\Delete::factory()
+    ->addId('123')
+    ->addId('456')
+    ->addQuery('platform:solr')
+    ->sendRequest($solr)
+;
+```
+
 ## Integrations
 
 * The [Acquia SDK for PHP](https://github.com/acquia/acquia-sdk-php)

@@ -13,7 +13,6 @@ class SolrUriTemplate extends UriTemplate
      *
      * @see http://guzzlephp.org/http-client/uri-templates.html
      * @see http://wiki.apache.org/solr/LocalParams
-     * @see https://github.com/guzzle/guzzle-docs/pull/56
      */
     public function expand($template, array $variables)
     {

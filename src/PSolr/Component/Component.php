@@ -1,6 +1,6 @@
 <?php
 
-namespace Psolr\Component\Component;
+namespace Psolr\Component;
 
 class Component extends \ArrayObject
 {

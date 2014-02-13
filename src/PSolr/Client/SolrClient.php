@@ -72,7 +72,7 @@ class SolrClient extends Client
             ->setRequestHandler(new RequestHandler('stats',   'admin/stats.jsp', 'GET',  $xmlParams))
             ->setRequestHandler(new RequestHandler('suggest', 'suggest',         'GET',  $jsonParams))
             ->setRequestHandler(new RequestHandler('system',  'admin/system',    'GET',  $jsonParams))
-            ->setRequestHandler(new RequestHandler('update',  'update',          'POST'))
+            ->setRequestHandler(new RequestHandler('update',  'update',          'POST', $jsonParams))
         ;
 
         return $solr;

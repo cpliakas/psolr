@@ -3,7 +3,6 @@
 namespace PSolr\Request;
 
 use PSolr\Client\SolrClient;
-use Psolr\Component\Component;
 
 class SolrRequest extends \ArrayObject
 {
@@ -119,12 +118,13 @@ class SolrRequest extends \ArrayObject
     }
 
     /**
-     * @param \Psolr\Component\Component $component
+     * @param \Psolr\Component\ComponentInterface $component
      *
      * @return \PSolr\Request\SolrRequest
      */
-    public function addComponent(Component $component)
+    public function addComponent(ComponentInterface $component)
     {
+        $component->preMergeParams($this);
         $this->exchangeArray(array_merge((array) $this, (array) $component));
         return $this;
     }
@@ -138,8 +138,6 @@ class SolrRequest extends \ArrayObject
      */
     public function sendRequest(SolrClient $solr, $headers = null, array $options = array())
     {
-        // This allows requests that build XML to pass the rendered document
-        // through the \PSolr\Request\SolrRequest::stripCtrlChars().
         $body = (string) $this ?: null;
         $params = (array) $this;
 

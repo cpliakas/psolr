@@ -2,7 +2,7 @@
 
 namespace PSolr\Response;
 
-class Select extends Response
+class SearchResults extends Response
 {
     /**
      * @return \PSolr\Response\DocumentIterator

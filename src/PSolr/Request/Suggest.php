@@ -5,9 +5,9 @@ namespace PSolr\Request;
 /**
  * @see http://wiki.apache.org/solr/Suggester
  *
- * @method \PSolr\Response\Spellcheck sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
+ * @method \PSolr\Response\Suggestions sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
  */
-class Suggest extends SolrRequest
+class Suggest extends Spellcheck
 {
     /**
      * @var protected
@@ -17,18 +17,14 @@ class Suggest extends SolrRequest
     /**
      * $var string
      */
-    protected $responseClass = '\PSolr\Response\Spellcheck';
+    protected $responseClass = '\PSolr\Response\Suggestions';
 
     /**
-     * @param string $query
-     *
-     * @return \PSolr\Request\Suggest
-     *
-     * @see http://wiki.apache.org/solr/Suggester
+     * {@inheritDoc}
      */
-    public function setQuery($query)
+    public function __construct(array $array = array())
     {
-        $this['q'] = $query;
-        return $this;
+        parent::__construct($array);
+        unset($this['spellcheck']);
     }
 }

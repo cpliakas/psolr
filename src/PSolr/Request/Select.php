@@ -5,7 +5,7 @@ namespace PSolr\Request;
 /**
  * @see http://wiki.apache.org/solr/CommonQueryParameters
  *
- * @method \PSolr\Response\Select sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
+ * @method \PSolr\Response\SearchResults sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
  */
 class Select extends SolrRequest
 {
@@ -15,7 +15,7 @@ class Select extends SolrRequest
     /**
      * $var string
      */
-    protected $responseClass = '\PSolr\Response\Select';
+    protected $responseClass = '\PSolr\Response\SearchResults';
 
     /**
      * @param string $query

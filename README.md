@@ -36,6 +36,7 @@ for installation and usage instructions.
 
 ```php
 use PSolr\Client\SolrClient;
+use PSolr\Request as Request;
 
 // Connect to a Solr server.
 $solr = SolrClient::factory(array(
@@ -55,9 +56,7 @@ $response = $solr->select(array('q' => '*:*'));
 #### Using Request Builders
 
 ```php
-use PSolr\Request as Request;
 
-// Or use the request builder.
 $select = Request\Select::factory()
   ->setQuery('*:*')
   ->setStart(0)
@@ -65,14 +64,29 @@ $select = Request\Select::factory()
 ;
 
 $response = $select->sendRequest($solr);
+$response->numFound();
 ```
 
-#### Arbitrary Requests
+#### Sending Arbitrary Requests
 
 ```php
-// Send arbitrary requests to Solr.
 // @see http://guzzlephp.org/http-client/client.html#creating-requests-with-a-client
 $response = $solr->get('admin/ping?wt=json')->send()->json();
+```
+
+### Updating Documents
+
+```php
+$add = Request\Add::factory();
+
+$document        = new Request\Document();
+$document->id    = '123';
+$document->title = 'Test document';
+$document->tag   = 'Category 1';
+$document->tag   = 'Category 2';
+$add->addDocument($document);
+
+$response = $add->sendRequest($solr)
 ```
 
 ## Integrations

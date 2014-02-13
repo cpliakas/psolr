@@ -13,6 +13,11 @@ class Select extends SolrRequest
     const OPERATOR_OR  = 'OR';
 
     /**
+     * @var protected
+     */
+    protected $handlerName = 'select';
+
+    /**
      * $var string
      */
     protected $responseClass = '\PSolr\Response\SearchResults';

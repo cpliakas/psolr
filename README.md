@@ -32,10 +32,10 @@ for installation and usage instructions.
 
 ## Usage
 
-```php
+### Client Instantiation
 
+```php
 use PSolr\Client\SolrClient;
-use PSolr\Request as Request;
 
 // Connect to a Solr server.
 $solr = SolrClient::factory(array(
@@ -43,8 +43,19 @@ $solr = SolrClient::factory(array(
     'base_path' => '/solr/myIndex',           // defaults to "/solr"
 ));
 
+```
+
+### Querying
+
+```php
 // Send a request to the /select handler.
 $response = $solr->select(array('q' => '*:*'));
+```
+
+#### Using Request Builders
+
+```php
+use PSolr\Request as Request;
 
 // Or use the request builder.
 $select = Request\Select::factory()
@@ -54,7 +65,11 @@ $select = Request\Select::factory()
 ;
 
 $response = $select->sendRequest($solr);
+```
 
+#### Arbitrary Requests
+
+```php
 // Send arbitrary requests to Solr.
 // @see http://guzzlephp.org/http-client/client.html#creating-requests-with-a-client
 $response = $solr->get('admin/ping?wt=json')->send()->json();

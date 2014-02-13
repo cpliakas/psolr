@@ -27,7 +27,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
     public function preMergeParams(SolrRequest $request)
     {
         if (isset($request['q']) && !isset($this['hl.q'])) {
-            $this['hl.q'] = $request['q'];
+            $this['spellcheck.q'] = $request['q'];
         }
     }
 
@@ -49,7 +49,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setQuery($query)
     {
-        $this['q'] = $query;
+        $this['spellcheck.q'] = $query;
         return $this;
     }
 

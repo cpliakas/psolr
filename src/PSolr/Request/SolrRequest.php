@@ -29,6 +29,7 @@ class SolrRequest extends \ArrayObject
     {
         parent::__construct($params);
         $this->body = $body;
+        $this->init();
     }
 
     /**
@@ -41,6 +42,11 @@ class SolrRequest extends \ArrayObject
     {
         return new static($params, $body);
     }
+
+    /**
+     * Initialization hook. Useful for setting default params.
+     */
+    public function init() {}
 
     /**
      * @return array

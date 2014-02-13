@@ -27,4 +27,15 @@ class Suggest extends Spellcheck
         parent::__construct($array);
         unset($this['spellcheck']);
     }
+
+    /**
+     * @param string $query
+     *
+     * @return \PSolr\Request\Suggest
+     */
+    public function setQuery($query)
+    {
+        $this['q'] = $query;
+        return $this;
+    }
 }

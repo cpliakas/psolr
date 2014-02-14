@@ -46,15 +46,7 @@ $solr = SolrClient::factory(array(
 
 ```
 
-### Querying
-
-#### Searching Documents
-
-```php
-$response = $solr->select(array('q' => '*:*'));
-```
-
-#### Using Request Builders
+### Searching Documents
 
 ```php
 
@@ -66,6 +58,12 @@ $select = Request\Select::factory()
 
 $response = $select->sendRequest($solr);
 $response->numFound();
+```
+
+For simple use cases:
+
+```php
+$response = $solr->select(array('q' => '*:*'));
 ```
 
 ### Adding Documents

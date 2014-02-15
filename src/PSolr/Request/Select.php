@@ -13,7 +13,7 @@ class Select extends SolrRequest
     const OPERATOR_OR  = 'OR';
 
     /**
-     * @var protected
+     * @var string
      */
     protected $handlerName = 'select';
 

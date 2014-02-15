@@ -8,14 +8,15 @@ use Guzzle\Http\Url;
 use Guzzle\Service\Client;
 
 /**
- * @method array luke($params = array(), $body = null, $headers = null, array $options = array())
- * @method array mbeans($params = array(), $body = null, $headers = null, array $options = array())
- * @method array ping($params = array(), $body = null, $headers = null, array $options = array())
- * @method array select($params = array(), $body = null, $headers = null, array $options = array())
- * @method array stats($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array luke(   $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array mbeans( $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array mlt(    $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array ping(   $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array select( $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array stats(  $params = array(), $body = null, $headers = null, array $options = array())
  * @method array suggest($params = array(), $body = null, $headers = null, array $options = array())
- * @method array system($params = array(), $body = null, $headers = null, array $options = array())
- * @method array update($params = array(), $body = null, $headers = null, array $options = array())
+ * @method array system( $params = array(), $body = null, $headers = null, array $options = array())
+ * @method array update( $params = array(), $body = null, $headers = null, array $options = array())
  */
 class SolrClient extends Client
 {
@@ -55,7 +56,7 @@ class SolrClient extends Client
         // Use JSON whenever possible.
         // @see http://code.google.com/p/solr-php-client/issues/detail?id=6#c1
         $jsonParams = array(
-            'wt' => 'json',
+            'wt'      => 'json',
             'json.nl' => 'map',
         );
 
@@ -67,6 +68,7 @@ class SolrClient extends Client
         $solr
             ->setRequestHandler(new RequestHandler('luke',    'admin/luke',      'GET',  $jsonParams))
             ->setRequestHandler(new RequestHandler('mbeans',  'admin/mbeans',    'GET',  $xmlParams + array('stats' => 'true')))
+            ->setRequestHandler(new RequestHandler('mlt',     'mlt',             'GET',  $jsonParams))
             ->setRequestHandler(new RequestHandler('ping',    'admin/ping',      'HEAD', $jsonParams))
             ->setRequestHandler(new RequestHandler('select',  'select',          'GET',  $jsonParams))
             ->setRequestHandler(new RequestHandler('stats',   'admin/stats.jsp', 'GET',  $xmlParams))

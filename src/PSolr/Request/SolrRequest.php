@@ -11,9 +11,9 @@ use PSolr\Client\SolrClient;
 class SolrRequest extends QueryString
 {
     /**
-     * @var protected
+     * @var string|null
      */
-    protected $handlerName = 'select';
+    protected $handlerName = null;
 
     /**
      * $var string

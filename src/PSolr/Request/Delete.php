@@ -8,7 +8,7 @@ namespace PSolr\Request;
 class Delete extends SolrRequest
 {
     /**
-     * @var protected
+     * @var string
      */
     protected $handlerName = 'update';
 

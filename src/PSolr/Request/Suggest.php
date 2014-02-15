@@ -10,7 +10,7 @@ namespace PSolr\Request;
 class Suggest extends Spellcheck
 {
     /**
-     * @var protected
+     * @var string
      */
     protected $handlerName = 'suggest';
 

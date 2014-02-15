@@ -10,7 +10,7 @@ namespace PSolr\Request;
 class Spellcheck extends SolrRequest implements ComponentInterface
 {
     /**
-     * @var protected
+     * @var string
      */
     protected $handlerName = 'spell';
 

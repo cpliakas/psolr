@@ -100,18 +100,10 @@ class Update extends SolrRequest
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
-    public function asXml()
+    public function renderBody()
     {
         return '<' . $this->element . $this->buildAttributes() . '/>';
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->asXml();
     }
 }

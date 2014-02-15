@@ -31,8 +31,7 @@ class Select extends SolrRequest
      */
     public function setQuery($query)
     {
-        $this['q'] = $query;
-        return $this;
+        return $this->set('q', $query);
     }
 
     /**
@@ -46,8 +45,7 @@ class Select extends SolrRequest
      */
     public function setSort($sort)
     {
-        $this['sort'] = $sort;
-        return $this;
+        return $this->set('sort', $sort);
     }
 
     /**
@@ -59,8 +57,7 @@ class Select extends SolrRequest
      */
     public function setStart($start)
     {
-        $this['start'] = $start;
-        return $this;
+        return $this->set('start', $start);
     }
 
     /**
@@ -72,8 +69,7 @@ class Select extends SolrRequest
      */
     public function setRows($rows)
     {
-        $this['rows'] = $rows;
-        return $this;
+        return $this->set('rows', $rows);
     }
 
     /**
@@ -85,8 +81,7 @@ class Select extends SolrRequest
      */
     public function setPageDoc($pageDoc)
     {
-        $this['pageDoc'] = $pageDoc;
-        return $this;
+        return $this->set('pageDoc', $pageDoc);
     }
 
     /**
@@ -98,8 +93,7 @@ class Select extends SolrRequest
      */
     public function setPageScore($pageScore)
     {
-        $this['pageScore'] = $pageScore;
-        return $this;
+        return $this->set('pageScore', $pageScore);
     }
 
     /**
@@ -109,25 +103,21 @@ class Select extends SolrRequest
      *
      * @see http://wiki.apache.org/solr/CommonQueryParameters#fq
      */
-    public function setFilterQuery($filterQuery)
+    public function addFilterQuery($filterQuery)
     {
-        $this['fq'] = $filterQuery;
-        return $this;
+        return $this->add('fq', $filterQuery);
     }
 
     /**
-     * @param string $fl
+     * @param string $fieldList
      *
      * @return \PSolr\Request\Select
      *
      * @see http://wiki.apache.org/solr/CommonQueryParameters#fl
-     *
-     * @todo Component\Sort.php
      */
-    public function setFieldList($fl)
+    public function setFieldList($fieldList)
     {
-        $this['fl'] = $fl;
-        return $this;
+        return $this->set('fl', $fieldList);
     }
 
     /**
@@ -139,8 +129,7 @@ class Select extends SolrRequest
      */
     public function setDefType($defType)
     {
-        $this['defType'] = $defType;
-        return $this;
+        return $this->set('defType', $defType);
     }
 
     /**
@@ -152,8 +141,7 @@ class Select extends SolrRequest
      */
     public function setTimeAllowed($timeAllowed)
     {
-        $this['timeAllowed'] = $timeAllowed;
-        return $this;
+        return $this->set('timeAllowed', $timeAllowed);
     }
 
     /**
@@ -165,8 +153,7 @@ class Select extends SolrRequest
      */
     public function omitHeader($omitHeader)
     {
-        $this['omitHeader'] = $omitHeader ? 'true' : 'false';
-        return $this;
+        return $this->set('omitHeader', $omitHeader);
     }
 
     /**
@@ -178,8 +165,7 @@ class Select extends SolrRequest
      */
     public function setDefaultOperator($operator)
     {
-        $this['q.op'] = $operator;
-        return $this;
+        return $this->set('q.op', $operator);
     }
 
     /**
@@ -191,7 +177,6 @@ class Select extends SolrRequest
      */
     public function setDefaultField($field)
     {
-        $this['df'] = $field;
-        return $this;
+        return $this->set('df', $field);
     }
 }

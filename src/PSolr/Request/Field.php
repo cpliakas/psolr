@@ -16,7 +16,7 @@ class Field
     /**
      * @var array
      */
-    protected $values = array();
+    protected $values;
 
     /**
      * @var float

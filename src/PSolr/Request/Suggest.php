@@ -22,11 +22,7 @@ class Suggest extends Spellcheck
     /**
      * {@inheritDoc}
      */
-    public function __construct(array $array = array())
-    {
-        parent::__construct($array);
-        unset($this['spellcheck']);
-    }
+    public function init() {}
 
     /**
      * @param string $query
@@ -35,7 +31,6 @@ class Suggest extends Spellcheck
      */
     public function setQuery($query)
     {
-        $this['q'] = $query;
-        return $this;
+        return $this->set('q', $query);
     }
 }

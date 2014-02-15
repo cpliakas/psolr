@@ -2,15 +2,11 @@
 
 namespace PSolr\Request;
 
+use Guzzle\Http\QueryString;
 use PSolr\Client\SolrClient;
 
-class SolrRequest extends \ArrayObject
+class SolrRequest extends QueryString
 {
-    /**
-     * @var string|null
-     */
-    protected $body;
-
     /**
      * @var protected
      */
@@ -23,24 +19,21 @@ class SolrRequest extends \ArrayObject
 
     /**
      * @param array $params
-     * @param string|null $body
      */
-    public function __construct(array $params = array(), $body = null)
+    public function __construct(array $params = array())
     {
         parent::__construct($params);
-        $this->body = $body;
         $this->init();
     }
 
     /**
      * @param array $params
-     * @param string|null $body
      *
      * @return \PSolr\Request\SolrRequest
      */
-    static public function factory(array $params = array(), $body = null)
+    static public function factory(array $params = array())
     {
-        return new static($params, $body);
+        return new static($params);
     }
 
     /**
@@ -49,30 +42,17 @@ class SolrRequest extends \ArrayObject
     public function init() {}
 
     /**
-     * @return array
-     */
-    public function getParams()
-    {
-        return $this->getArrayCopy();
-    }
-
-    /**
-     * @param string|null $body
+     * {@inheritDoc}
      *
-     * @return \PSolr\Request\SolrRequest
+     * Converts booleans to strings.
      */
-    public function setBody($body)
+    public function set($key, $value)
     {
-        $this->body = $body;
-        return $this;
-    }
+        if (is_bool($value)) {
+            $value = $value ? 'true' : 'false';
+        }
 
-    /**
-     * @return string|null
-     */
-    public function getBody()
-    {
-        return $this->body;
+        return parent::set($key, $value);
     }
 
     /**
@@ -92,6 +72,17 @@ class SolrRequest extends \ArrayObject
     public function getHandlerName()
     {
         return $this->handlerName;
+    }
+
+    /**
+     * Renders the body, most often overridden by request objects that generate
+     * JSON or XML, e.g. update requests.
+     *
+     * @return string|null
+     */
+    public function renderBody()
+    {
+        return null;
     }
 
     /**
@@ -131,8 +122,7 @@ class SolrRequest extends \ArrayObject
     public function addComponent(ComponentInterface $component)
     {
         $component->preMergeParams($this);
-        $this->exchangeArray(array_merge((array) $this, (array) $component));
-        return $this;
+        return $this->overwriteWith($component->toArray());
     }
 
     /**
@@ -144,20 +134,10 @@ class SolrRequest extends \ArrayObject
      */
     public function sendRequest(SolrClient $solr, $headers = null, array $options = array())
     {
-        $body = (string) $this ?: null;
-        $params = (array) $this;
-
         // @todo Add a method in \PSolr\Response\Response to normalize the XML
         // in to an array. Just use JSON and all is right in the world.
-        $data = $solr->sendRequest($this->handlerName, $params, $body, $headers, $options);
+        $params = $this->toArray();
+        $data = $solr->sendRequest($this->handlerName, $params, $this->renderBody(), $headers, $options);
         return is_array($data) ? new $this->responseClass($data, $params) : $data;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->body ?: '';
     }
 }

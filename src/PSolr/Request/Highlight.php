@@ -23,10 +23,11 @@ class Highlight extends SolrRequest implements ComponentInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Enables highlighting.
      */
-    public function __construct(array $array = array())
+    public function init()
     {
-        parent::__construct($array);
         $this->highlight();
     }
 
@@ -39,8 +40,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function highlight($highlight = true)
     {
-        $this['hl'] = $highlight ? 'true' : 'false';
-        return $this;
+        return $this->set('highlight', $highlight);
     }
 
     /**
@@ -52,8 +52,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setQuery($query)
     {
-        $this['hl.q'] = $query;
-        return $this;
+        return $this->set('hl.q', $query);
     }
 
     /**
@@ -65,8 +64,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setSnippets($snippets)
     {
-        $this['hl.snippets'] = $snippets;
-        return $this;
+        return $this->set('hl.snippets', $snippets);
     }
 
     /**
@@ -78,8 +76,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setFragsize($fragsize)
     {
-        $this['hl.fragsize'] = $fragsize;
-        return $this;
+        return $this->set('hl.fragsize', $fragsize);
     }
 
     /**
@@ -91,8 +88,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function mergeContiguous($merge = true)
     {
-        $this['hl.mergeContiguous'] = $merge ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.mergeContiguous', $merge);
     }
 
     /**
@@ -104,8 +100,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function requireFieldMatch($require = true)
     {
-        $this['hl.requireFieldMatch'] = $require ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.requireFieldMatch', $require);
     }
 
     /**
@@ -117,8 +112,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setMaxAnalyzedChars($chars)
     {
-        $this['hl.maxAnalyzedChars'] = $chars;
-        return $this;
+        return $this->set('hl.maxAnalyzedChars', $chars);
     }
 
     /**
@@ -130,8 +124,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setAlternateField($field)
     {
-        $this['hl.alternateField'] = $field;
-        return $this;
+        return $this->set('hl.alternateField', $field);
     }
 
     /**
@@ -143,8 +136,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setMaxAlternateFieldLength($length)
     {
-        $this['hl.maxAlternateFieldLength'] = $length;
-        return $this;
+        return $this->set('hl.maxAlternateFieldLength', $length);
     }
 
     /**
@@ -156,8 +148,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function preserveMulti($preserve = true)
     {
-        $this['hl.preserveMulti'] = $preserve ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.preserveMulti', $preserve);
     }
 
     /**
@@ -169,8 +160,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setMaxMultiValuedToExamine($max)
     {
-        $this['hl.maxMultiValuedToExamine'] = $max;
-        return $this;
+        return $this->set('hl.maxMultiValuedToExamine', $max);
     }
 
     /**
@@ -182,8 +172,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setMaxMultiValuedToMatch($max)
     {
-        $this['hl.maxMultiValuedToMatch'] = $max;
-        return $this;
+        return $this->set('hl.maxMultiValuedToMatch', $max);
     }
 
     /**
@@ -195,8 +184,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setFormatter($formatter)
     {
-        $this['hl.formatter'] = $formatter;
-        return $this;
+        return $this->set('hl.formatter', $formatter);
     }
 
     /**
@@ -208,8 +196,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setSimplePre($text)
     {
-        $this['hl.simple.pre'] = $text;
-        return $this;
+        return $this->set('hl.simple.pre', $text);
     }
 
     /**
@@ -221,8 +208,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setSimplePost($text)
     {
-        $this['hl.simple.post'] = $text;
-        return $this;
+        return $this->set('hl.simple.post', $text);
     }
 
     /**
@@ -254,8 +240,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setFragmenter($fragmenter)
     {
-        $this['hl.fragmenter'] = $fragmenter;
-        return $this;
+        return $this->set('hl.fragmenter', $fragmenter);
     }
 
     /**
@@ -267,8 +252,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setFragListBuilder($builder)
     {
-        $this['hl.fragListBuilder'] = $builder;
-        return $this;
+        return $this->set('hl.fragListBuilder', $builder);
     }
 
     /**
@@ -280,8 +264,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScanner($scanner)
     {
-        $this['hl.boundaryScanner'] = $scanner;
-        return $this;
+        return $this->set('hl.boundaryScanner', $scanner);
     }
 
     /**
@@ -293,8 +276,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setFragmentsBuilder($builder)
     {
-        $this['hl.fragmentsBuilder'] = $builder;
-        return $this;
+        return $this->set('hl.fragmentsBuilder', $builder);
     }
 
     /**
@@ -306,8 +288,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScannerMaxScan($maxScan)
     {
-        $this['hl.bs.maxScan'] = $maxScan;
-        return $this;
+        return $this->set('hl.bs.maxScan', $maxScan);
     }
 
     /**
@@ -319,8 +300,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScannerChars($chars)
     {
-        $this['hl.bs.chars'] = $chars;
-        return $this;
+        return $this->set('hl.bs.chars', $chars);
     }
 
     /**
@@ -332,8 +312,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScannerType($type)
     {
-        $this['hl.bs.type'] = $type;
-        return $this;
+        return $this->set('hl.bs.type', $type);
     }
 
     /**
@@ -345,8 +324,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScannerLanguage($language)
     {
-        $this['hl.bs.language'] = $language;
-        return $this;
+        return $this->set('hl.bs.language', $language);
     }
 
     /**
@@ -358,8 +336,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setBoundaryScannerCountry($country)
     {
-        $this['hl.bs.country'] = $country;
-        return $this;
+        return $this->set('hl.bs.country', $country);
     }
 
     /**
@@ -371,8 +348,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function useFastVectorHighlighter($use = true)
     {
-        $this['hl.useFastVectorHighlighter'] = $use ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.useFastVectorHighlighter', $use);
     }
 
     /**
@@ -384,8 +360,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function usePhraseHighlighter($use = true)
     {
-        $this['hl.usePhraseHighlighter'] = $use ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.usePhraseHighlighter', $use);
     }
 
     /**
@@ -397,8 +372,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function highlightMultiTerm($multiTerm = true)
     {
-        $this['hl.highlightMultiTerm'] = $multiTerm ? 'true' : 'false';
-        return $this;
+        return $this->set('hl.highlightMultiTerm', $multiTerm);
     }
 
     /**
@@ -410,8 +384,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setRegexSlop($slop)
     {
-        $this['hl.regex.slop'] = $slop;
-        return $this;
+        return $this->set('hl.regex.slop', $slop);
     }
 
     /**
@@ -423,8 +396,7 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setRegexPattern($pattern)
     {
-        $this['hl.regex.pattern'] = $pattern;
-        return $this;
+        return $this->set('hl.regex.pattern', $pattern);
     }
 
     /**
@@ -436,7 +408,6 @@ class Highlight extends SolrRequest implements ComponentInterface
      */
     public function setRegexMaxAnalyzedChars($max)
     {
-        $this['hl.regex.maxAnalyzedChars'] = $max;
-        return $this;
+        return $this->set('hl.regex.maxAnalyzedChars', $max);
     }
 }

@@ -45,9 +45,9 @@ class Delete extends SolrRequest
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
-    public function asXml()
+    public function renderBody()
     {
         $xml = '<delete>';
 
@@ -61,13 +61,5 @@ class Delete extends SolrRequest
 
         $xml .= '</delete>';
         return SolrRequest::stripCtrlChars($xml);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->asXml();
     }
 }

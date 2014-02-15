@@ -33,10 +33,11 @@ class Spellcheck extends SolrRequest implements ComponentInterface
 
     /**
      * {@inheritDoc}
+     *
+     * Enables spell checking.
      */
-    public function __construct(array $array = array())
+    public function init()
     {
-        parent::__construct($array);
         $this->spellcheck();
     }
 
@@ -49,8 +50,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setQuery($query)
     {
-        $this['spellcheck.q'] = $query;
-        return $this;
+        return $this->set('spellcheck.q', $query);
     }
 
     /**
@@ -62,8 +62,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function spellcheck($spellcheck = true)
     {
-        $this['spellcheck'] = $spellcheck ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck', $spellcheck);
     }
 
     /**
@@ -75,8 +74,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function build($build = true)
     {
-        $this['spellcheck.build'] = $build ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck.build', $build);
     }
 
     /**
@@ -88,8 +86,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function reload($reload = true)
     {
-        $this['spellcheck.reload'] = $reload ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck.reload', $reload);
     }
 
     /**
@@ -101,8 +98,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setDictionary($dictionary)
     {
-        $this['spellcheck.dictionary'] = $dictionary;
-        return $this;
+        return $this->set('spellcheck.dictionary', $dictionary);
     }
 
     /**
@@ -114,8 +110,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setCount($count)
     {
-        $this['spellcheck.count'] = $count;
-        return $this;
+        return $this->set('spellcheck.dictionary', $count);
     }
 
     /**
@@ -127,8 +122,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setAlternativeTermCount($count)
     {
-        $this['spellcheck.alternativeTermCount'] = $count;
-        return $this;
+        return $this->set('spellcheck.alternativeTermCount', $count);
     }
 
     /**
@@ -140,8 +134,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function onlyMorePopular($onlyMorePopular = true)
     {
-        $this['spellcheck.onlyMorePopular'] = $onlyMorePopular ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck.onlyMorePopular', $onlyMorePopular);
     }
 
     /**
@@ -153,8 +146,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setMaxResultsForSuggest($maxResults)
     {
-        $this['spellcheck.maxResultsForSuggest'] = $maxResults;
-        return $this;
+        return $this->set('spellcheck.maxResultsForSuggest', $maxResults);
     }
 
     /**
@@ -166,8 +158,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function collate($collate = true)
     {
-        $this['spellcheck.collate'] = $collate ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck.collate', $collate);
     }
 
     /**
@@ -179,8 +170,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setMaxCollations($maxCollations)
     {
-        $this['spellcheck.maxCollations'] = $maxCollations;
-        return $this;
+        return $this->set('spellcheck.maxCollations', $maxCollations);
     }
 
     /**
@@ -192,8 +182,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setMaxCollationTries($maxTries)
     {
-        $this['spellcheck.maxCollationTries'] = $maxTries;
-        return $this;
+        return $this->set('spellcheck.maxCollationTries', $maxTries);
     }
 
     /**
@@ -206,8 +195,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setCollateParam($param, $value)
     {
-        $this['spellcheck.collateParam.' . $param] = $value;
-        return $this;
+        return $this->set('spellcheck.collateParam.' . $param, $value);
     }
 
     /**
@@ -219,8 +207,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function collateExtendedResults($collate = true)
     {
-        $this['spellcheck.collateExtendedResults'] = $collate ? 'true' : 'false';
-        return $this;
+        return $this->set('spellcheck.collateExtendedResults', $collate);
     }
 
     /**
@@ -232,8 +219,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setCollateMaxCollectDocs($maxDocs)
     {
-        $this['spellcheck.collateMaxCollectDocs'] = $maxDocs;
-        return $this;
+        return $this->set('spellcheck.collateMaxCollectDocs', $maxDocs);
     }
 
     /**
@@ -245,8 +231,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setAccuracy($accuracy)
     {
-        $this['spellcheck.accuracy'] = $accuracy;
-        return $this;
+        return $this->set('spellcheck.accuracy', $accuracy);
     }
 
     /**
@@ -260,7 +245,6 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      */
     public function setDictionaryParam($dictionary, $key, $value)
     {
-        $this['spellcheck.' . $dictionary . '.' . $key] = $value;
-        return $this;
+        return $this->set('spellcheck.' . $dictionary . '.' . $key, $value);
     }
 }

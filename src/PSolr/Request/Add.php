@@ -71,9 +71,9 @@ class Add extends SolrRequest
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
-    public function asXml()
+    public function renderBody()
     {
         $attributes = '';
 
@@ -93,13 +93,5 @@ class Add extends SolrRequest
         $xml .= '</add>';
 
         return self::stripCtrlChars($xml);
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->asXml();
     }
 }

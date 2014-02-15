@@ -9,4 +9,11 @@ interface ComponentInterface
      * what is set in the query this component is being added to.
      */
     public function preMergeParams(SolrRequest $request);
+
+    /**
+     * Returns an array of query string parameters.
+     *
+     * @return array
+     */
+    public function toArray();
 }

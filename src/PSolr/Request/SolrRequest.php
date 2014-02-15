@@ -134,9 +134,17 @@ class SolrRequest extends QueryString
      * @param array $options
      *
      * @return \PSolr\Response\Response|\SimpleXMLElement
+     *
+     * @throws \UnexpectedValueException
      */
     public function sendRequest(SolrClient $solr, $headers = null, array $options = array())
     {
+        // If we don't have a request handler, then the passed request is only a
+        // component and we cannot execute the search.
+        if (null === $this->handlerName) {
+            throw new \UnexpectedValueException('Unable to send request: handler name missing');
+        }
+
         // @todo Add a method in \PSolr\Response\Response to normalize the XML
         // in to an array. Just use JSON and all is right in the world.
         $params = $this->toArray();

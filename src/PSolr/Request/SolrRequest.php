@@ -5,6 +5,9 @@ namespace PSolr\Request;
 use Guzzle\Http\QueryString;
 use PSolr\Client\SolrClient;
 
+/**
+ * Base class for PSolr request objects.
+ */
 class SolrRequest extends QueryString
 {
     /**

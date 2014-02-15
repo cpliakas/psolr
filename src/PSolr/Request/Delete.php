@@ -2,6 +2,9 @@
 
 namespace PSolr\Request;
 
+/**
+ * @see https://wiki.apache.org/solr/UpdateXmlMessages#A.22delete.22_documents_by_ID_and_by_Query
+ */
 class Delete extends SolrRequest
 {
     /**

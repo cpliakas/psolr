@@ -2,6 +2,9 @@
 
 namespace PSolr\Request;
 
+/**
+ * @see https://wiki.apache.org/solr/UpdateXmlMessages
+ */
 class Update extends SolrRequest
 {
     /**
@@ -38,6 +41,8 @@ class Update extends SolrRequest
      * @param bool $waitFlush
      *
      * @return \PSolr\Request\Commit
+     *
+     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22commit.22_and_.22optimize.22
      */
     public function waitFlush($waitFlush = true)
     {
@@ -49,6 +54,8 @@ class Update extends SolrRequest
      * @param bool $waitSearcher
      *
      * @return \PSolr\Request\Commit
+     *
+     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22commit.22_and_.22optimize.22
      */
     public function waitSearcher($waitSearcher = true)
     {
@@ -60,6 +67,8 @@ class Update extends SolrRequest
      * @param bool $softCommit
      *
      * @return \PSolr\Request\Commit
+     *
+     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22commit.22_and_.22optimize.22
      */
     public function softCommit($softCommit = true)
     {
@@ -80,6 +89,8 @@ class Update extends SolrRequest
     }
 
     /**
+     * Builds an attribute from a class property if it is set.
+     *
      * @param string $property
      *
      * @return string

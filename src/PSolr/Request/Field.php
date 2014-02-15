@@ -2,6 +2,9 @@
 
 namespace PSolr\Request;
 
+/**
+ * @see https://wiki.apache.org/solr/UpdateXmlMessages#The_Update_Schema
+ */
 class Field
 {
     const UPDATE_REPLACE   = 'set';
@@ -100,6 +103,8 @@ class Field
      * @param string $update
      *
      * @return \PSolr\Request\Document
+     *
+     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22field.22
      */
     public function setAtomicUpdate($update)
     {

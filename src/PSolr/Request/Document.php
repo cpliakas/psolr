@@ -2,6 +2,9 @@
 
 namespace PSolr\Request;
 
+/**
+ * @see https://wiki.apache.org/solr/UpdateXmlMessages#The_Update_Schema
+ */
 class Document
 {
     /**
@@ -26,6 +29,8 @@ class Document
      * @param float $boost
      *
      * @return \PSolr\Request\Document
+     *
+     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_on_.22doc.22
      */
     public function setBoost($boost)
     {

@@ -23,6 +23,27 @@ class Select extends SolrRequest
     protected $responseClass = '\PSolr\Response\SearchResults';
 
     /**
+     * Helper function that turns associative arrays into query fields.
+     *
+     * @param string|array $fields
+     *
+     * @see https://wiki.apache.org/solr/DisMaxQParserPlugin#qf_.28Query_Fields.29
+     */
+    public function buildQueryFields($fields)
+    {
+        // Assume strings are pre-formatted.
+        if (is_string($fields)) {
+            return $fields;
+        }
+
+        $processed = array();
+        foreach ($fields as $field => $boost) {
+            $processed = $field . '^' . $boost;
+        }
+        return join(',', $processed);
+    }
+
+    /**
      * @param string $query
      *
      * @return \PSolr\Request\Select

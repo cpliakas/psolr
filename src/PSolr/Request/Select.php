@@ -4,6 +4,7 @@ namespace PSolr\Request;
 
 /**
  * @see http://wiki.apache.org/solr/CommonQueryParameters
+ * @see http://wiki.apache.org/solr/ExtendedDisMax
  *
  * @method \PSolr\Response\SearchResults sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
  */
@@ -23,13 +24,18 @@ class Select extends SolrRequest
     protected $responseClass = '\PSolr\Response\SearchResults';
 
     /**
-     * Helper function that turns associative arrays into query fields.
+     * Helper function that turns associative arrays into boosted fields.
+     *
+     * - array('field' => 10.0) = "field^10.0".
+     * - array('field' => array(2, 10.0) = "field~2^10.0"
      *
      * @param string|array $fields
      *
      * @see https://wiki.apache.org/solr/DisMaxQParserPlugin#qf_.28Query_Fields.29
+     *
+     * @todo Rethink this.
      */
-    public function buildQueryFields($fields)
+    public function buildBoostedFields($fields)
     {
         // Assume strings are pre-formatted.
         if (is_string($fields)) {
@@ -37,8 +43,16 @@ class Select extends SolrRequest
         }
 
         $processed = array();
-        foreach ($fields as $field => $boost) {
-            $processed = $field . '^' . $boost;
+        foreach ($fields as $fieldName => $boost) {
+            if (!is_array($boost)) {
+                $processed[] = $fieldName . '^' . $boost;
+            } else {
+                $field = $fieldName . '~' . $boost[0];
+                if (isset($boost[1])) {
+                    $field .= '^' . $boost[1];
+                }
+                $processed[] = $field;
+            }
         }
         return join(',', $processed);
     }
@@ -199,5 +213,81 @@ class Select extends SolrRequest
     public function setDefaultField($field)
     {
         return $this->set('df', $field);
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#q.alt
+     */
+    public function setAlternateQuery($query)
+    {
+        return $this->set('q.alt', $query);
+    }
+
+    /**
+     * @param string|array $fields
+     *   An associative array of fields to boosts, e.g. array('field' => 2.0);
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#qf_.28Query_Fields.29
+     */
+    public function setQueryFields($fields)
+    {
+        return $this->set('qf', $this->buildBoostedFields($fields));
+    }
+
+    /**
+     * @param string $mm
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#mm_.28Minimum_.27Should.27_Match.29
+     */
+    public function setMinimumShouldMatch($mm)
+    {
+        return $this->set('mm', $mm);
+    }
+
+    /**
+     * @param string $slop
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#qs_.28Query_Phrase_Slop.29
+     */
+    public function setQueryPhraseSlop($slop)
+    {
+        return $this->set('qs', $slop);
+    }
+
+    /**
+     * @param string|array $fields
+     *   An associative array of fields to boosts, e.g. array('field' => 2.0).
+     *   Pass an array of values to add slop, e.g. array('field', array(2, 10.0)
+     *   will render "field~2^10".
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#pf_.28Phrase_Fields.29
+     */
+    public function setPhraseFields($fields)
+    {
+        return $this->set('pf', $this->buildBoostedFields($fields));
+    }
+
+    /**
+     * @param float $slop
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#ps_.28Phrase_Slop.29
+     */
+    public function setPhraseSlop($slop)
+    {
+        return $this->set('ps', $slop);
     }
 }

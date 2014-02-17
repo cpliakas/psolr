@@ -161,7 +161,7 @@ class MoreLikeThis extends Select implements ComponentInterface
      */
     public function setQueryFields($fields)
     {
-        return $this->set('mlt.qf', $this->buildQueryFields($fields));
+        return $this->set('mlt.qf', $this->buildBoostedFields($fields));
     }
 
     //

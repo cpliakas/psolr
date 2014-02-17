@@ -434,15 +434,15 @@ class Facet extends SolrRequest implements ComponentInterface
     }
 
     /**
-     * @param array $fields
+     * @param string|array $fields
      *
      * @return \Psolr\Component\Facet
      *
      * @see http://wiki.apache.org/solr/SimpleFacetParameters#facet.pivot
      */
-    public function addPivot(array $fields)
+    public function addPivot($fields)
     {
-        return $this->add('facet.pivot', join(',', $fields));
+        return $this->add('facet.pivot', join(',', (array) $fields));
     }
 
     /**

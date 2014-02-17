@@ -109,7 +109,7 @@ class Select extends SolrRequest
     }
 
     /**
-     * @param string $fieldList
+     * @param string|array $fieldList
      *
      * @return \PSolr\Request\Select
      *
@@ -117,7 +117,7 @@ class Select extends SolrRequest
      */
     public function setFieldList($fieldList)
     {
-        return $this->set('fl', $fieldList);
+        return $this->set('fl', join(',', (array) $fieldList));
     }
 
     /**

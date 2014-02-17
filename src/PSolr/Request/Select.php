@@ -13,6 +13,8 @@ class Select extends SolrRequest
     const OPERATOR_AND = 'AND';
     const OPERATOR_OR  = 'OR';
 
+    const DEFTYPE_EDISMAX = 'edismax';
+
     /**
      * @var string
      */
@@ -289,5 +291,124 @@ class Select extends SolrRequest
     public function setPhraseSlop($slop)
     {
         return $this->set('ps', $slop);
+    }
+
+    /**
+     * @param string|array $fields
+     *   An associative array of fields to boosts, e.g. array('field' => 2.0).
+     *   Pass an array of values to add slop, e.g. array('field', array(2, 10.0)
+     *   will render "field~2^10".
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#pf2_.28Phrase_bigram_fields.29
+     */
+    public function setPhraseBigramFields($fields)
+    {
+        return $this->set('pf2', $this->buildBoostedFields($fields));
+    }
+
+    /**
+     * @param float $slop
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#ps2_.28Phrase_bigram_slop.29
+     */
+    public function setPhraseBigramSlop($slop)
+    {
+        return $this->set('ps2', $slop);
+    }
+
+    /**
+     * @param string|array $fields
+     *   An associative array of fields to boosts, e.g. array('field' => 2.0).
+     *   Pass an array of values to add slop, e.g. array('field', array(2, 10.0)
+     *   will render "field~2^10".
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#pf3_.28Phrase_trigram_fields.29
+     */
+    public function setPhraseTrigramFields($fields)
+    {
+        return $this->set('pf3', $this->buildBoostedFields($fields));
+    }
+
+    /**
+     * @param float $slop
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#ps3_.28Phrase_trigram_slop.29
+     */
+    public function setPhraseTrigramSlop($slop)
+    {
+        return $this->set('ps3', $slop);
+    }
+
+    /**
+     * @param float $tieBreaker
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#tie_.28Tie_breaker.29
+     */
+    public function setTieBreaker($tieBreaker)
+    {
+        return $this->set('tie', $tieBreaker);
+    }
+
+    /**
+     * @param string $query
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#bq_.28Boost_Query.29
+     */
+    public function setBoostQuery($query)
+    {
+        return $this->set('bq', $tieBreaker);
+    }
+
+    /**
+     * @param string $function
+     * @param bool $multiplicative
+     *   Defaults to false (additive), pass true for multiplicitive.
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#bf_.28Boost_Function.2C_additive.29
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#boost_.28Boost_Function.2C_multiplicative.29
+     * @see http://wiki.apache.org/solr/FunctionQuery
+     */
+    public function addBoostFunction($function, $multiplicative = false)
+    {
+        $param = $multiplicative ? 'boost' : 'bf';
+        return $this->add($param, $function);
+    }
+
+    /**
+     * @param string|array $fields
+     *
+     * @return \PSolr\Request\Select
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#uf_.28User_Fields.29
+     */
+    public function setUserFields($fields)
+    {
+        return $this->set('uf', join(' ', (array) $fields));
+    }
+
+    /**
+     * @param bool $interpret
+     *
+     * @return \Psolr\Component\Facet
+     *
+     * @see http://wiki.apache.org/solr/ExtendedDisMax#lowercaseOperators
+     */
+    public function interpretLowercaseOperators($interpret = true)
+    {
+        return $this->set('lowercaseOperators', (bool) $interpret);
     }
 }

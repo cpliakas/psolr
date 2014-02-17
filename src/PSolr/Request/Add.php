@@ -3,7 +3,7 @@
 namespace PSolr\Request;
 
 /**
- * @see https://wiki.apache.org/solr/UpdateXmlMessages#add.2Freplace_documents
+ * @see http://wiki.apache.org/solr/UpdateXmlMessages#add.2Freplace_documents
  */
 class Add extends SolrRequest
 {
@@ -45,7 +45,7 @@ class Add extends SolrRequest
      *
      * @return \PSolr\Request\Add
      *
-     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22add.22
+     * @see http://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22add.22
      */
     public function overwrite($overwrite = true)
     {
@@ -58,7 +58,7 @@ class Add extends SolrRequest
      *
      * @return \PSolr\Request\Add
      *
-     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22add.22
+     * @see http://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22add.22
      */
     public function commitWithin($commitWithin)
     {

@@ -3,7 +3,7 @@
 namespace PSolr\Request;
 
 /**
- * @see https://wiki.apache.org/solr/UpdateXmlMessages#A.22commit.22_and_.22optimize.22
+ * @see http://wiki.apache.org/solr/UpdateXmlMessages#A.22commit.22_and_.22optimize.22
  */
 class Optimize extends Update
 {
@@ -32,7 +32,7 @@ class Optimize extends Update
      *
      * @return \PSolr\Request\Commit
      *
-     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22optimize.22
+     * @see http://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22optimize.22
      */
     public function setMaxSegments($maxSegments)
     {

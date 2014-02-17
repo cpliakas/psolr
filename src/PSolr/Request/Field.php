@@ -3,7 +3,7 @@
 namespace PSolr\Request;
 
 /**
- * @see https://wiki.apache.org/solr/UpdateXmlMessages#The_Update_Schema
+ * @see http://wiki.apache.org/solr/UpdateXmlMessages#The_Update_Schema
  */
 class Field
 {
@@ -104,7 +104,7 @@ class Field
      *
      * @return \PSolr\Request\Document
      *
-     * @see https://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22field.22
+     * @see http://wiki.apache.org/solr/UpdateXmlMessages#Optional_attributes_for_.22field.22
      */
     public function setAtomicUpdate($update)
     {

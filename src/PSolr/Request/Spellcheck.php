@@ -3,7 +3,7 @@
 namespace PSolr\Request;
 
 /**
- * @see https://wiki.apache.org/solr/SpellCheckComponent
+ * @see http://wiki.apache.org/solr/SpellCheckComponent
  *
  * @method \PSolr\Response\Spellcheck sendRequest(\PSolr\Request\SolrClient $solr, $headers = null, array $options = array())
  */
@@ -46,7 +46,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \PSolr\Request\Suggest
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#q_OR_spellcheck.q
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#q_OR_spellcheck.q
      */
     public function setQuery($query)
     {
@@ -58,7 +58,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck
      */
     public function spellcheck($spellcheck = true)
     {
@@ -70,7 +70,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.build
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.build
      */
     public function build($build = true)
     {
@@ -82,7 +82,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.reload
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.reload
      */
     public function reload($reload = true)
     {
@@ -94,7 +94,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.dictionary
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.dictionary
      */
     public function setDictionary($dictionary)
     {
@@ -106,7 +106,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.count
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.count
      */
     public function setCount($count)
     {
@@ -118,7 +118,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.alternativeTermCount
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.alternativeTermCount
      */
     public function setAlternativeTermCount($count)
     {
@@ -130,7 +130,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.onlyMorePopular
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.onlyMorePopular
      */
     public function onlyMorePopular($onlyMorePopular = true)
     {
@@ -142,7 +142,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxResultsForSuggest
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxResultsForSuggest
      */
     public function setMaxResultsForSuggest($maxResults)
     {
@@ -154,7 +154,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collate
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collate
      */
     public function collate($collate = true)
     {
@@ -166,7 +166,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxCollations
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxCollations
      */
     public function setMaxCollations($maxCollations)
     {
@@ -178,7 +178,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxCollationTries
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.maxCollationTries
      */
     public function setMaxCollationTries($maxTries)
     {
@@ -191,7 +191,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateParam.XX
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateParam.XX
      */
     public function setCollateParam($param, $value)
     {
@@ -203,7 +203,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateExtendedResults
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateExtendedResults
      */
     public function collateExtendedResults($collate = true)
     {
@@ -215,7 +215,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateMaxCollectDocs
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.collateMaxCollectDocs
      */
     public function setCollateMaxCollectDocs($maxDocs)
     {
@@ -227,7 +227,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck.accuracy
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck.accuracy
      */
     public function setAccuracy($accuracy)
     {
@@ -241,7 +241,7 @@ class Spellcheck extends SolrRequest implements ComponentInterface
      *
      * @return \Psolr\Component\Spellcheck
      *
-     * @see https://wiki.apache.org/solr/SpellCheckComponent#spellcheck..3CDICT_NAME.3E.key
+     * @see http://wiki.apache.org/solr/SpellCheckComponent#spellcheck..3CDICT_NAME.3E.key
      */
     public function setDictionaryParam($dictionary, $key, $value)
     {

@@ -16,8 +16,14 @@ class Response extends \ArrayObject
     public function __construct($data, array $params)
     {
         $this->params = $params;
+        $this->normalizeResponse($data);
         parent::__construct($data);
     }
+
+    /**
+     * @param array &$data
+     */
+    public function normalizeResponse(&$data) {}
 
     /**
      * @return array

@@ -51,7 +51,7 @@ class Stats extends SolrRequest implements ComponentInterface
      *
      * @see http://wiki.apache.org/solr/StatsComponent
      */
-    public function addField($facet)
+    public function addFacet($facet)
     {
         return $this->add('stats.facet', $facet);
     }

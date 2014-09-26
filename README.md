@@ -1,6 +1,7 @@
 # PSolr
 
-[![Build Status](https://travis-ci.org/cpliakas/psolr.png?branch=master)](https://travis-ci.org/cpliakas/psolr)
+[![Build Status](https://travis-ci.org/cpliakas/psolr.svg?branch=master)](https://travis-ci.org/cpliakas/psolr)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/cpliakas/psolr/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/cpliakas/psolr/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/cpliakas/psolr/v/stable.png)](https://packagist.org/packages/cpliakas/psolr)
 
 A simple PHP client for [Apache Solr](http://lucene.apache.org/solr/) that is

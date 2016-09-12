@@ -1,6 +1,6 @@
 <?php
 
-namespace Psolr\Client;
+namespace PSolr\Client;
 
 use Guzzle\Parser\UriTemplate\UriTemplate;
 
